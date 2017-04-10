@@ -43,7 +43,7 @@ var customerChoice = function() {
                     inquirer.prompt({
                         type: "input",
                         name: "quantity",
-                        message: "Price is: " + chosenProduct.price + "\nHow many of them would you like to buy?",
+                        message: "Price is: $" + chosenProduct.price + "\nHow many of them would you like to buy?",
                     }).then(function(count){
 
                         // If customer demand is more than stock item quantity throw message.
@@ -59,7 +59,7 @@ var customerChoice = function() {
                             console.log("You bought "
                             + parseInt(count.quantity) + " "
                             + chosenProduct.product_name + "(s) "
-                            + chalk.green("Your total is: " + total));
+                            + chalk.green("Your total is: $" + total));
                             
                             connection.query("UPDATE products SET ? WHERE ?",[{
                                 stock_quantity: chosenProduct.stock_quantity - parseInt(count.quantity)
