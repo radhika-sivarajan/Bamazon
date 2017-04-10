@@ -23,6 +23,7 @@ var managerPrompt = [
 
 var queryAll = "SELECT * FROM products;"
 var queryLowInventory = "SELECT * FROM products WHERE stock_quantity < 5;"
+var queryDept = "SELECT DISTINCT department_name FROM products";
 
 // connecting to "bamazon" database and prompt manager choices
 connection.connect(function(err) {
@@ -106,41 +107,50 @@ var addInventory = function(){
 };
 
 var addProduct = function(){
-    inquirer.prompt([
-        {
-            type: "input",
-            name: "productName",
-            message: "Name of the product?"
-        },
-        {
-            type: "input",
-            name: "deptName",
-            message: "Department name?"
-        },
-        {
-            type: "input",
-            name: "productPrice",
-            message: "Price of single unit?"
-        },
-        {
-            type: "input",
-            name: "productQuantity",
-            message: "Quantity?"
-        }
-
-    ]).then(function(answer){
-        connection.query("INSERT INTO products SET ?",[{
-            product_name: answer.productName,
-            department_name: answer.deptName,
-            price: answer.productPrice,
-            stock_quantity: answer.productQuantity
-        }],function(err,res){
-            if(err){
-                console.log("Error in inserting database.");
+    connection.query(queryDept, function(error,data){  
+        inquirer.prompt([
+            {
+                type: "input",
+                name: "productName",
+                message: "Name of the product?"
+            },
+            {
+                type: "list",
+                name: "deptName",
+                message: "Department name?",
+                choices: function(d){
+                    var deptArray = [];      
+                    for (var i = 0; i < data.length; i++) {
+                        deptArray.push(data[i].department_name);
+                    }
+                    return deptArray;
+                }
+            },
+            {
+                type: "input",
+                name: "productPrice",
+                message: "Price of single unit?"
+            },
+            {
+                type: "input",
+                name: "productQuantity",
+                message: "Quantity?"
             }
-            console.log(chalk.green("New product added to the database"));
-            nextTask();
-        });   
+
+        ]).then(function(answer){
+            connection.query("INSERT INTO products SET ?",[{
+                product_name: answer.productName,
+                department_name: answer.deptName,
+                price: answer.productPrice,
+                stock_quantity: answer.productQuantity
+            }],function(err,res){
+                if(err){
+                    console.log("Error in inserting database.");
+                }
+                console.log(chalk.green("New product added to the database"));
+                nextTask();
+            });   
+        });
     });
 };
 
