@@ -71,12 +71,24 @@ var createDepartment = function(){
         {
             type: "input",
             name: "departmentName",
-            message: "Name of the department?"
+            message: "Name of the department?",
+            validate: function(value) {
+                if (value.length > 0) {
+                    return true;
+                }
+                return false;
+            }
         },
         {
             type: "input",
             name: "overHeadCosts",
-            message: "Over head costs?"
+            message: "Over head costs?",
+            validate: function(value) {
+                if (isNaN(value) === false && value !== 0 && value.length > 0) {
+                    return true;
+                }
+                return false;
+            }
         }
     ]).then(function(answer){
         connection.query("INSERT INTO departments SET ?",[{

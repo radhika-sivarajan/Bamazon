@@ -85,9 +85,15 @@ var addInventory = function(){
                  if(res[i].product_name === product.productList){
                     var chosenProduct = res[i];
                     inquirer.prompt({
-                    type: "input",
-                    name: "restock",
-                    message: "How much would you like to restock?",
+                        type: "input",
+                        name: "restock",
+                        message: "How much would you like to restock?",
+                        validate: function(value) {
+                            if (isNaN(value) === false && value !== 0 && value.length > 0) {
+                                return true;
+                            }
+                            return false;
+                        }
                     }).then(function(count){
                         connection.query("UPDATE products SET ? WHERE ?",[{
                             stock_quantity: chosenProduct.stock_quantity + parseInt(count.restock)
@@ -115,7 +121,13 @@ var addProduct = function(){
             {
                 type: "input",
                 name: "productName",
-                message: "Name of the product?"
+                message: "Name of the product?",
+                validate: function(value) {
+                    if (value.length > 0) {
+                        return true;
+                    }
+                    return false;
+                }
             },
             {
                 type: "list",
@@ -132,12 +144,24 @@ var addProduct = function(){
             {
                 type: "input",
                 name: "productPrice",
-                message: "Price of single unit?"
+                message: "Price of single unit?",
+                validate: function(value) {
+                    if (isNaN(value) === false && value !== 0 && value.length > 0) {
+                        return true;
+                    }
+                    return false;
+                }
             },
             {
                 type: "input",
                 name: "productQuantity",
-                message: "Quantity?"
+                message: "Quantity?",
+                validate: function(value) {
+                    if (isNaN(value) === false && value !== 0 && value.length > 0) {
+                        return true;
+                    }
+                    return false;
+                }
             }
 
         ]).then(function(answer){

@@ -44,6 +44,12 @@ var customerChoice = function() {
                         type: "input",
                         name: "quantity",
                         message: "Price is: $" + chosenProduct.price + "\nHow many of them would you like to buy?",
+                        validate: function(value) {
+                            if (isNaN(value) === false && value !== 0 && value.length > 0) {
+                                return true;
+                            }
+                            return false;
+                        }
                     }).then(function(count){
 
                         // If customer demand is more than stock item quantity throw message.
