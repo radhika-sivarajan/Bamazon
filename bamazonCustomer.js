@@ -62,7 +62,8 @@ var customerChoice = function() {
                             + chalk.green("Your total is: $" + total));
                             
                             connection.query("UPDATE products SET ? WHERE ?",[{
-                                stock_quantity: chosenProduct.stock_quantity - parseInt(count.quantity)
+                                stock_quantity: chosenProduct.stock_quantity - parseInt(count.quantity),
+                                product_sales: chosenProduct.product_sales + parseInt(total)
                             },{
                                 item_id: chosenProduct.item_id
                             }],function(err, res){
@@ -70,6 +71,23 @@ var customerChoice = function() {
                                     console.log("DB error");
                                 }
                                 nextTask();
+                            });
+
+                            connection.query("SELECT * from departments",function(error, result){
+                                for(var i=0; i<result.length; i++){
+                                    if(result[i].department_name === chosenProduct.department_name){
+                                        var department = result[i];
+                                        connection.query("UPDATE departments SET ? WHERE ?",[{
+                                            total_sales: department.total_sales + parseInt(total)
+                                        },{
+                                            department_id: department.department_id
+                                        }],function(err, res){
+                                            if(err){
+                                                console.log("DB error");
+                                            }
+                                        });
+                                    }
+                                }
                             });
                         }
                     });
