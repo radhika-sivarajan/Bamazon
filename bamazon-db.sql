@@ -39,6 +39,7 @@ INSERT INTO departments (department_name, over_head_costs) VALUES
 ("Clothing","1002"),
 ("Electronics","1500"),
 ("Jewelry","500"),
-("Furniture","1000");
+("Furniture","1000"),
+("Toys","200");
 
 SELECT * FROM departments;

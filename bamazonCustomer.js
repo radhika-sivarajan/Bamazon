@@ -94,5 +94,3 @@ var nextTask = function(){
         }
     });
 };
-
-  // console.log();
