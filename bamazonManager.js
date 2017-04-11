@@ -60,6 +60,9 @@ var viewProducts = function(query){
                 + " Price:  $" + chalk.blue(res[i].price)
                 + " Quantity:  " + chalk.blue(res[i].stock_quantity));
         }
+        if(res.length === 0){
+            console.log(chalk.green("No records"));
+        }
         nextTask();        
     });
 };
