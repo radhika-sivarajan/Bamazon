@@ -26,3 +26,19 @@ INSERT INTO products (product_name, department_name, price, stock_quantity) VALU
 ("Watch","Electronics","400","44");
 
 SELECT * FROM products;
+
+CREATE TABLE departments (
+    department_id INT AUTO_INCREMENT NOT NULL,
+    department_name VARCHAR(200) NULL,
+    over_head_costs DECIMAL(10 , 2 ) NOT NULL DEFAULT 0,
+    total_sales DECIMAL(10 , 2 ) NOT NULL DEFAULT 0,
+    PRIMARY KEY (department_id)
+);
+
+INSERT INTO departments (department_name, over_head_costs) VALUES 
+("Clothing","1002"),
+("Electronics","1500"),
+("Jewelry","500"),
+("Furniture","1000");
+
+SELECT * FROM departments;

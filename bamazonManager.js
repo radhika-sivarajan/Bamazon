@@ -23,7 +23,7 @@ var managerPrompt = [
 
 var queryAll = "SELECT * FROM products;"
 var queryLowInventory = "SELECT * FROM products WHERE stock_quantity < 5;"
-var queryDept = "SELECT DISTINCT department_name FROM products";
+var queryDept = "SELECT DISTINCT department_name FROM departments";
 
 // connecting to "bamazon" database and prompt manager choices
 connection.connect(function(err) {
