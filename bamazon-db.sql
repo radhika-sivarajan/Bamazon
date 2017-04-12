@@ -1,3 +1,6 @@
+-- Database: bamazon
+-- Tables: products, departments
+
 DROP DATABASE bamazon;
 
 CREATE DATABASE bamazon;
@@ -26,8 +29,6 @@ INSERT INTO products (product_name, department_name, price, stock_quantity) VALU
 ("Necklace","Jewelry","209","20"),
 ("Watch","Electronics","400","44");
 
-SELECT * FROM products;
-
 CREATE TABLE departments (
     department_id INT AUTO_INCREMENT NOT NULL,
     department_name VARCHAR(200) NULL,
@@ -43,4 +44,12 @@ INSERT INTO departments (department_name, over_head_costs) VALUES
 ("Furniture","1000"),
 ("Toys","200");
 
-SELECT * FROM departments;
+SELECT 
+    *
+FROM
+    products;
+
+SELECT 
+    *
+FROM
+    departments;
