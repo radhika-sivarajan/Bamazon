@@ -1,6 +1,8 @@
 var inquirer = require("inquirer");
 var chalk = require("chalk");
 var mysql = require("mysql");
+var Table = require('cli-table');
+
 var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
@@ -21,9 +23,9 @@ var managerPrompt = [
     }
 ];
 
-var queryAll = "SELECT * FROM products;"
+var queryAllProducts = "SELECT * FROM products ORDER BY department_name;"
 var queryLowInventory = "SELECT * FROM products WHERE stock_quantity < 5;"
-var queryDept = "SELECT DISTINCT department_name FROM departments";
+var queryDept = "SELECT DISTINCT department_name FROM departments ORDER BY department_name";
 
 // connecting to "bamazon" database and prompt manager choices
 connection.connect(function(err) {
@@ -32,11 +34,12 @@ connection.connect(function(err) {
     managerChoice();
 });
 
+// Choose function accoding to user selection
 var managerChoice = function(){
     inquirer.prompt(managerPrompt).then(function(answer){
         switch(answer.managerChoices){
             case("View Products for Sale"):
-                viewProducts(queryAll);
+                viewProducts(queryAllProducts);
                 break;
             case("View Low Inventory"):
                 viewProducts(queryLowInventory);
@@ -51,15 +54,24 @@ var managerChoice = function(){
     });
 };
 
+// List product details according to query
 var viewProducts = function(query){
+    var table = new Table({
+        head: ['ID', 'Product name', 'Department name', 'Price', 'Quantity'],
+        colWidths: [5, 20, 20, 10, 10]
+    });
     connection.query(query, function(err,res){
         for (var i = 0; i < res.length; i++) {
-            console.log("Product id: " + chalk.blue(res[i].item_id)
-                + " Name: " + chalk.blue(res[i].product_name)
-                + " Dept name:  " + chalk.blue(res[i].department_name)
-                + " Price:  $" + chalk.blue(res[i].price)
-                + " Quantity:  " + chalk.blue(res[i].stock_quantity));
+            table.push(
+                 [chalk.blue(res[i].item_id),
+                 chalk.blue(res[i].product_name),
+                 chalk.blue(res[i].department_name),
+                 chalk.blue("$" + res[i].price),
+                 chalk.blue(res[i].stock_quantity)]
+            );
         }
+        console.log(table.toString());
+
         if(res.length === 0){
             console.log(chalk.green("No records"));
         }
@@ -67,8 +79,9 @@ var viewProducts = function(query){
     });
 };
 
+// Select product and add invetory
 var addInventory = function(){
-    connection.query(queryAll, function(err,res){
+    connection.query(queryAllProducts, function(err,res){
         inquirer.prompt({
             type: "list",
             name: "productList",
@@ -115,6 +128,7 @@ var addInventory = function(){
     });
 };
 
+// Add new product to the table
 var addProduct = function(){
     connection.query(queryDept, function(error,data){  
         inquirer.prompt([
@@ -181,6 +195,7 @@ var addProduct = function(){
     });
 };
 
+// Promt to continue manage or Quit.
 var nextTask = function(){
     inquirer.prompt({
         type: "list",
