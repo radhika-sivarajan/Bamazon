@@ -11,11 +11,6 @@ var connection = mysql.createConnection({
     database: "bamazon"
 });
 
-var table = new Table({
-    head: ['ID', 'department_name', 'over_head_costs', 'product_sales', 'total_profit'],
-    colWidths: [5, 20, 20, 20, 20]
-});
-
 var supervisorPrompt = [
     {
         type: "list",
@@ -27,13 +22,14 @@ var supervisorPrompt = [
     }
 ];
 
-// connecting to "bamazon" database and prompt manager choices
+// connecting to "bamazon" database and prompt Supervisor choices
 connection.connect(function(err) {
     if (err) throw err;
     console.log(chalk.bold.magenta("******* BAMAZON Supervisor *******"));
     supervisorChoice();
 });
 
+// Choose function accoding to user selection
 var supervisorChoice = function(){
     inquirer.prompt(supervisorPrompt).then(function(answer){
         switch(answer.supervisorChoices){
@@ -50,15 +46,20 @@ var supervisorChoice = function(){
     });
 };
 
+// View product sales as a table
 var viewProductsSale = function(){
+    var table = new Table({
+        head: ['ID', 'department_name', 'over_head_costs', 'product_sales', 'total_profit ($)'],
+        colWidths: [5, 20, 20, 20, 20]
+    });
     connection.query("SELECT * from departments",function(error, result){   
         for(var i=0; i<result.length; i++){            
             table.push(
                  [result[i].department_id, 
                  result[i].department_name,
-                 result[i].over_head_costs,
-                 result[i].total_sales,
-                 result[i].total_sales - result[i].over_head_costs]
+                 "$" + result[i].over_head_costs,
+                 "$" + result[i].total_sales,
+                 (result[i].total_sales - result[i].over_head_costs)]
             );
         }
         console.log(table.toString());
@@ -66,6 +67,7 @@ var viewProductsSale = function(){
     });
 };
 
+// Create new department insert into department table
 var createDepartment = function(){
     inquirer.prompt([
         {
@@ -104,6 +106,7 @@ var createDepartment = function(){
     });
 };
 
+// Quit connection
 var quit = function(){
     console.log(chalk.bold.blue("******* Have a nice day *******"));
     connection.end(function(err) {});
