@@ -1,6 +1,7 @@
 var inquirer = require("inquirer");
 var chalk = require("chalk");
 var mysql = require("mysql");
+
 var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
@@ -9,7 +10,7 @@ var connection = mysql.createConnection({
     database: "bamazon"
 });
 
-// connecting to "bamazon" database and prompt customer choices
+// connecting to "bamazon" database and prompt customer choices.
 connection.connect(function(err) {
     if (err) throw err;
     console.log(chalk.bold.magenta("******* Welcome to BAMAZON *******"));
@@ -36,7 +37,7 @@ var customerChoice = function() {
             }
         }).then(function(item){
 
-            // Get the selected product and prompt field to input quatity for customer
+            // Get the selected product and prompt field to input quatity for customer.
             for(var i=0; i<res.length; i++){
                 if(res[i].product_name === item.productList){
                     var chosenProduct = res[i];
@@ -59,7 +60,7 @@ var customerChoice = function() {
                             + chosenProduct.product_name + "(s)"));
                             customerChoice();
 
-                        // If stock available calculate total, Upadate database, Show next options
+                        // If stock available calculate total.
                         }else{
                             var total = parseInt(count.quantity) * chosenProduct.price;
                             console.log("You bought "
@@ -67,6 +68,7 @@ var customerChoice = function() {
                             + chosenProduct.product_name + "(s) "
                             + chalk.green("Your total is: $" + total));
                             
+                            // Upadate products table, Show next options.
                             connection.query("UPDATE products SET ? WHERE ?",[{
                                 stock_quantity: chosenProduct.stock_quantity - parseInt(count.quantity),
                                 product_sales: chosenProduct.product_sales + parseInt(total)
@@ -79,6 +81,7 @@ var customerChoice = function() {
                                 nextTask();
                             });
 
+                            // Upadate total_sales in departments table according to the product sale by department.                            
                             connection.query("SELECT * from departments",function(error, result){
                                 for(var i=0; i<result.length; i++){
                                     if(result[i].department_name === chosenProduct.department_name){
@@ -103,6 +106,7 @@ var customerChoice = function() {
     });
 };
 
+// Promt for continue shopping or Quit.
 var nextTask = function(){
     inquirer.prompt({
         type: "list",
