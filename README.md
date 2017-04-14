@@ -48,7 +48,7 @@ Manager can view all the products and their details, View low inventories (Produ
 The supervisor can view a table of product sales by department or add a new department. 
 
 ### Supervisor Options.
-![BamazonManager1](/Screenshots/BamazonManager1.png?raw=true)
+![BamazonManager1](/Screenshots/BamazonSupervisor1.png?raw=true)
 
 ### View product sales by department and Create new department.
-![BamazonManager2](/Screenshots/BamazonManager2.png?raw=true)
+![BamazonManager2](/Screenshots/BamazonSupervisor2.png?raw=true)
