@@ -18,7 +18,7 @@ var supervisorPrompt = [
         message: "Select an action.",
         choices: ["View Product Sales by Department",
         "Create New Department",
-        "QUIT",]
+        "QUIT"]
     }
 ];
 
