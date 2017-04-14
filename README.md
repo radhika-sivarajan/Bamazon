@@ -4,10 +4,10 @@ An Amazon-like storefront node app incorporating MySQL
 ## Table of Contents
 
 - [To Install](#to-install)
+- [Dependencies](#dependencies)
 - [Customer Mode](#customer-mode)
 - [Manager Mode](#manager-mode)
 - [Supervisor Mode](#supervisor-mode)
-- [Dependencies](#dependencies)
 
 ## To Install
 * Git Clone the repository to your local machine
