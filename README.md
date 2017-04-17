@@ -26,6 +26,8 @@ npm packages
 ## Customer Mode
 Customer wiil be able to see the list of products available in the store and place order. When customer select a product, app will show the price of that product and prompt user to enter the quantity. If store has not enough of the product to meet the customer's request app will show a message and customer can restart the shopping.
 
+	node bamazonCustomer.js
+
 ### Customer options.
 ![BamazonCustomer1](/Screenshots/BamazonCustomer1.png?raw=true)
 
@@ -34,6 +36,8 @@ Customer wiil be able to see the list of products available in the store and pla
 
 ## Manager Mode
 Manager can view all the products and their details, View low inventories (Product quantity less than 5), Add inventory and Add new products.
+	
+    node bamazonManager.js
 
 ### Manager Options.
 ![BamazonManager1](/Screenshots/BamazonManager1.png?raw=true)
@@ -46,6 +50,8 @@ Manager can view all the products and their details, View low inventories (Produ
 
 ## Supervisor Mode
 The supervisor can view a table of product sales by department or add a new department. 
+	
+    node bamazonSupervisor.js
 
 ### Supervisor Options.
 ![BamazonManager1](/Screenshots/BamazonSupervisor1.png?raw=true)
