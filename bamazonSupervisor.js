@@ -11,16 +11,15 @@ var connection = mysql.createConnection({
     database: "bamazon"
 });
 
-var supervisorPrompt = [
-    {
-        type: "list",
-        name: "supervisorChoices",
-        message: "Select an action.",
-        choices: ["View Product Sales by Department",
+var supervisorPrompt = [{
+    type: "list",
+    name: "supervisorChoices",
+    message: "Select an action.",
+    choices: ["View Product Sales by Department",
         "Create New Department",
-        "QUIT"]
-    }
-];
+        "QUIT"
+    ]
+}];
 
 // connecting to "bamazon" database and prompt Supervisor choices
 connection.connect(function(err) {
@@ -30,16 +29,16 @@ connection.connect(function(err) {
 });
 
 // Choose function accoding to user selection
-var supervisorChoice = function(){
-    inquirer.prompt(supervisorPrompt).then(function(answer){
-        switch(answer.supervisorChoices){
-            case("View Product Sales by Department"):
+var supervisorChoice = function() {
+    inquirer.prompt(supervisorPrompt).then(function(answer) {
+        switch (answer.supervisorChoices) {
+            case ("View Product Sales by Department"):
                 viewProductsSale();
                 break;
-            case("Create New Department"):
+            case ("Create New Department"):
                 createDepartment();
                 break;
-            case("QUIT"):
+            case ("QUIT"):
                 quit();
                 break;
         }
@@ -47,19 +46,20 @@ var supervisorChoice = function(){
 };
 
 // View product sales as a table
-var viewProductsSale = function(){
+var viewProductsSale = function() {
     var table = new Table({
         head: ['ID', 'department_name', 'over_head_costs', 'product_sales', 'total_profit ($)'],
         colWidths: [5, 20, 20, 20, 20]
     });
-    connection.query("SELECT * from departments",function(error, result){   
-        for(var i=0; i<result.length; i++){            
+    connection.query("SELECT * from departments", function(error, result) {
+        for (var i = 0; i < result.length; i++) {
             table.push(
-                 [result[i].department_id, 
-                 result[i].department_name,
-                 "$" + result[i].over_head_costs,
-                 "$" + result[i].total_sales,
-                 (result[i].total_sales - result[i].over_head_costs)]
+                [result[i].department_id,
+                    result[i].department_name,
+                    "$" + result[i].over_head_costs,
+                    "$" + result[i].total_sales,
+                    (result[i].total_sales - result[i].over_head_costs)
+                ]
             );
         }
         console.log(table.toString());
@@ -68,9 +68,8 @@ var viewProductsSale = function(){
 };
 
 // Create new department insert into department table
-var createDepartment = function(){
-    inquirer.prompt([
-        {
+var createDepartment = function() {
+    inquirer.prompt([{
             type: "input",
             name: "departmentName",
             message: "Name of the department?",
@@ -92,22 +91,22 @@ var createDepartment = function(){
                 return false;
             }
         }
-    ]).then(function(answer){
-        connection.query("INSERT INTO departments SET ?",[{
+    ]).then(function(answer) {
+        connection.query("INSERT INTO departments SET ?", [{
             department_name: answer.departmentName,
             over_head_costs: answer.overHeadCosts
-        }],function(err,res){
-            if(err){
+        }], function(err, res) {
+            if (err) {
                 console.log("Error in inserting database.");
             }
             console.log(chalk.green("New department added to the database"));
             supervisorChoice();
-        });   
+        });
     });
 };
 
 // Quit connection
-var quit = function(){
+var quit = function() {
     console.log(chalk.bold.blue("******* Have a nice day *******"));
     connection.end(function(err) {});
 };
